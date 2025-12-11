@@ -13,7 +13,7 @@ use skill_utils::{
     version,
     about = "Utilities for managing Claude Code plugins in this repo",
     long_about = "Utilities for managing Claude Code plugins in this repo.\n\nWorkflow: run init first, then pre-commit to verify. If something fails, run steps individually. Once everything is clean, bump version.\n\nPlugin workflow (local):\n- Create: init --name <n> --description \"...\" --author \"...\"\n- Validate: validate --manifest plugins/<n>/.claude-plugin/plugin.json\n- Register: add-to-marketplace --manifest plugins/<n>/.claude-plugin/plugin.json\n- Pre-commit flow: pre-commit (auto detect staged manifests) or pre-commit --manifest <path> [--skip-stage]",
-    help_template = "{name} v{version}\n{about}\n\n{long-about}\n\n{usage-heading} {usage}\n\n{all-args}\n"
+    help_template = "{name} v{version}\n{about-with-newline}\n{usage-heading} {usage}\n\n{all-args}\n"
 )]
 struct Cli {
     #[command(subcommand)]
