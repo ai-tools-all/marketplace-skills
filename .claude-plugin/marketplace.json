@@ -3,6 +3,10 @@
   "owner": {
     "name": "abeeshake"
   },
+  "metadata": {
+    "description": "Agent Context management skills",
+    "version": "1.0.0"
+  },
   "plugins": [
     {
       "name": "bug-detective",
