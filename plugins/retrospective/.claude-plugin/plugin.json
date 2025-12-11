@@ -1,9 +1,16 @@
 {
   "name": "retrospective",
   "description": "Adds a /retrospective command that captures session learnings and prepares a Skill PR to the team registry.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": {
-    "name": "Abhishek Tripathi"
+    "name": "Abhishek Tripathi",
+    "email": null,
+    "url": null
   },
-  "commands": "./commands/"
+  "homepage": null,
+  "keywords": null,
+  "commands": "./commands/",
+  "agents": null,
+  "skills": null,
+  "hooks": null
 }

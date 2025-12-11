@@ -3,15 +3,16 @@
   "owner": {
     "name": "abeeshake"
   },
-  "metadata": {
-    "description": "Agent Context management skills",
-    "version": "1.0.0"
-  },
   "plugins": [
     {
       "name": "bug-detective",
       "source": "/home/abhishek/Downloads/experiments/ai-tools/marketplace_of_abeeshake/plugins/bug-detective",
       "description": "Systematically debug issues with step-by-step troubleshooting approaches."
+    },
+    {
+      "name": "retrospective",
+      "source": "plugins/retrospective",
+      "description": "Adds a /retrospective command that captures session learnings and prepares a Skill PR to the team registry."
     }
   ]
 }
