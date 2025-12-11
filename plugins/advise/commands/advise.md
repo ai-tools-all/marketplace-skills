@@ -1,39 +1,32 @@
 ---
-description: Consult the team registry to surface warnings, proven configurations, and shortcuts relevant to the current task.
+description: Scans the team registry to surface warnings, proven configurations, and shortcuts for the current task. Use before starting experiments, refactoring, or complex implementations.
+name: advise
 ---
 
-# Team Advisory Command
+# Team Advisory
 
-## Phase 1: Context & Retrieval
-1. **Analyze Current Intent:** Read the user's current prompt, active file selection, and recent chat history to determine the immediate technical goal (e.g., "Starting a pruning experiment," "Refactoring auth middleware").
-2. **Search Registry:** Scan the `./skills/` (or designated team registry) folder. Look for semantic matches, not just keyword matches (e.g., if user is doing "cleanup," look for "refactoring" or "pruning").
-3. **Identify Relevancy:** Prioritize Skill files that contain:
-   - **Anti-Patterns/Gotchas** related to the current stack.
-   - **Configuration/Hyperparameters** that were previously verified.
-   - **Dependencies** that match the current environment.
+## Execution Checklist
+1.  **Pin Goal:** Read the prompt, active file, and recent chat to define the immediate technical objective.
+2.  **Scan Registry:** Search `./skills/` (or configured registry) for semantic matches.
+3.  **Filter & Prioritize:**
+    *   **Priority 1 (Traps):** Files containing "Anti-Patterns," "Gotchas," or "Pitfalls."
+    *   **Priority 2 (Shortcuts):** Files containing "Magic Numbers," config blocks, or proven commands.
+    *   **Priority 3 (Context):** Files with matching dependencies or stack versions.
+4.  **Synthesize:** Do not dump file contents. Extract specific values and warnings.
 
-## Phase 2: Synthesis (The "Senior Engineer" Filter)
-Do not dump the content of the files. Synthesize specific advice for the *current* context:
-1. **Extract Warnings First:** If a relevant Skill file lists a "Trap" or "Anti-Pattern," surface this immediately.
-2. **Extract "Magic Numbers":** If the previous attempt found specific values (timeout durations, learning rates, buffer sizes) that worked, present them as the starting point.
-3. **Compare Contexts:** If the previous skill was for a different version or slightly different use case, explicitly state the assumption (e.g., "This advice is from v2, verify validity for v3").
+## Output Template
+If relevant skills are found, use this exact format:
 
-## Phase 3: Advisory Output
-Format the response to stop the user from wasting time. Use the following structure:
-
-### 🛑 STOP & READ: Known Pitfalls
-*   *List specific "Don'ts" found in the registry.*
-*   *(e.g., "Do not use the default HNSW index for this dataset size; previous experiments showed it caused OOM errors.")*
+```markdown
+### 🛑 Known Pitfalls
+- <Specific "Do not do X" warning tied to current stack>
+- <Root cause of previous failures (e.g., OOM on specific batch size)>
 
 ### ⚡ Accelerated Path
-*   *Provide the "Cheat Sheet" from previous learnings.*
-*   *Copy-pasteable config blocks or command arguments that are known to work.*
+- <Copyable config / command / hyperparameter value>
+- <Snippet of "Happy Path" code>
 
 ### 🧠 Source Context
-*   "Based on [Skill File Name] created on [Date]."
-*   *Brief summary of why that previous session is relevant to this one.*
-
-## Phase 4: Negative Result
-If no relevant skills/retrospectives are found in the registry:
-*   State clearly: "No matching prior art found in the team registry."
-*   Encourage the user: "Proceed with caution. Please run `/retrospective` after this session to create the first Skill file for this topic."
+- **Based on:** <Skill File Name> (<Date>)
+- **Relevance:** <Why it applies (e.g., "Same dataset size", "v2 API")>
+- **Caveats:** <Version drift or context mismatch warnings>
