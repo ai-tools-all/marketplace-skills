@@ -7,12 +7,12 @@ use skill_utils::{
     validate_plugin,
 };
 
-/// CLI entrypoint for skill-utils workspace actions.
 #[derive(Parser)]
 #[command(
     name = "skill-utils",
     version,
-    about = "Utilities for managing Claude Code plugins in this repo"
+    about = "Utilities for managing Claude Code plugins in this repo",
+    long_about = "Utilities for managing Claude Code plugins in this repo.\n\nPlugin workflow (local):\n- Create: init --name <n> --description \"...\" --author \"...\"\n- Validate: validate --manifest plugins/<n>/.claude-plugin/plugin.json\n- Register: add-to-marketplace --manifest plugins/<n>/.claude-plugin/plugin.json\n- Pre-commit flow: pre-commit (auto detect staged manifests) or pre-commit --manifest <path> [--skip-stage]"
 )]
 struct Cli {
     #[command(subcommand)]
