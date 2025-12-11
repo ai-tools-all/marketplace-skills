@@ -18,8 +18,8 @@
 ## Repo layout
 - `.claude-plugin/marketplace.json` — marketplace manifest (fill with your marketplace name and plugin entries).
 - `plugins/bug-detective/` — plugin folder with manifest and command definition.
-- `docs/001-how-to-plugin.md` — how to create and test plugins.
-- `docs/002-plugin-reference.md` — reference copy for plugin structure and workflows.
+- `docs/2025-12-11-how-to-plugin-guide.md` — how to create and test plugins.
+- `docs/2025-12-11-plugin-reference-detailed-manual.md` — reference copy for plugin structure and workflows.
 
 ## Using a plugin
 - After install, run its command from Claude Code (e.g., `/bug-detective`).
