@@ -144,10 +144,6 @@ my-first-plugin/
 * **Hooks**: Create `hooks/hooks.json` for event handling
 * **MCP servers**: Create `.mcp.json` for external tool integration
 
-<Note>
-  **Next steps**: Ready to add more features? Jump to [Develop more complex plugins](#develop-more-complex-plugins) to add agents, hooks, and MCP servers. For complete technical specifications of all plugin components, see [Plugins reference](/en/plugins-reference).
-</Note>
-
 ***
 
 ## Install and manage plugins
