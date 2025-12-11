@@ -13,6 +13,11 @@
       "name": "retrospective",
       "source": "plugins/retrospective",
       "description": "Adds a /retrospective command that captures session learnings and prepares a Skill PR to the team registry."
+    },
+    {
+      "name": "advise",
+      "source": "plugins/advise",
+      "description": "Consult the team registry to surface warnings, proven configurations, and shortcuts relevant to the current task."
     }
   ]
 }
