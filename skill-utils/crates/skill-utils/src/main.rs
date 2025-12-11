@@ -12,7 +12,7 @@ use skill_utils::{
     name = "skill-utils",
     version,
     about = "Utilities for managing Claude Code plugins in this repo",
-    long_about = "Utilities for managing Claude Code plugins in this repo.\n\nPlugin workflow (local):\n- Create: init --name <n> --description \"...\" --author \"...\"\n- Validate: validate --manifest plugins/<n>/.claude-plugin/plugin.json\n- Register: add-to-marketplace --manifest plugins/<n>/.claude-plugin/plugin.json\n- Pre-commit flow: pre-commit (auto detect staged manifests) or pre-commit --manifest <path> [--skip-stage]"
+    long_about = "Utilities for managing Claude Code plugins in this repo.\n\nWorkflow: run init first, then pre-commit to verify. If something fails, run steps individually. Once everything is clean, bump version.\n\nPlugin workflow (local):\n- Create: init --name <n> --description \"...\" --author \"...\"\n- Validate: validate --manifest plugins/<n>/.claude-plugin/plugin.json\n- Register: add-to-marketplace --manifest plugins/<n>/.claude-plugin/plugin.json\n- Pre-commit flow: pre-commit (auto detect staged manifests) or pre-commit --manifest <path> [--skip-stage]"
 )]
 struct Cli {
     #[command(subcommand)]
