@@ -1,0 +1,16 @@
+- Purpose: add `skill-utils` Rust workspace with a `skill-utils` CLI to manage Claude plugin scaffolding and marketplace entries for this repo.
+- Scope:
+  - Create new plugins via `init` (scaffold manifest/commands) and auto-register in `.claude-plugin/marketplace.json`.
+  - Validate plugin manifests against required fields, semver, and referenced paths.
+  - Append/update marketplace entries from existing manifests.
+  - Auto bump plugin versions (patch/minor/major) with monotonic enforcement.
+- Defaults and assumptions:
+  - Repository root passed via `--root` (defaults to current dir).
+  - Marketplace path is `.claude-plugin/marketplace.json`; bootstrapped if missing/empty with name `marketplace-of-abeeshake`.
+  - New plugin skeleton starts at version `0.1.0`, commands placed under `plugins/<name>/commands/`.
+- Usage examples (from repo root):
+  - `cargo run -p skill-utils -- init --name demo --description "Demo plugin" --author "Your Name"`  
+  - `cargo run -p skill-utils -- validate --manifest plugins/demo/.claude-plugin/plugin.json`  
+  - `cargo run -p skill-utils -- add-to-marketplace --manifest plugins/demo/.claude-plugin/plugin.json`  
+  - `cargo run -p skill-utils -- bump-version --manifest plugins/demo/.claude-plugin/plugin.json --level minor`
+
