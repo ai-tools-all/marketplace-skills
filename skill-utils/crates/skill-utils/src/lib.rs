@@ -1,11 +1,13 @@
-use anyhow::{anyhow, Context, Result};
+use anyhow::{Context, Result, anyhow};
 use clap::ValueEnum;
 use pathdiff::diff_paths;
 use semver::Version;
 use serde::{Deserialize, Serialize};
+use std::collections::HashSet;
 use std::fs;
 use std::io::Write;
 use std::path::{Path, PathBuf};
+use std::process::Command;
 
 /// Describes author metadata for a plugin manifest.
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -304,4 +306,113 @@ fn default_marketplace() -> Marketplace {
         },
         plugins: Vec::new(),
     }
+}
+
+/// Runs the end-to-end pre-commit flow for plugin manifests.
+/// Algorithm: decide manifest list (explicit or staged detection), validate each, bump patch version, update marketplace, optionally git-add touched files.
+pub fn precommit_flow(
+    root: &Path,
+    manifests: Option<Vec<PathBuf>>,
+    skip_stage: bool,
+) -> Result<Vec<PathBuf>> {
+    let manifest_list = if let Some(items) = manifests {
+        items
+    } else {
+        detect_staged_manifests(root)?
+    };
+
+    if manifest_list.is_empty() {
+        return Ok(Vec::new());
+    }
+
+    let marketplace_path = root.join(".claude-plugin").join("marketplace.json");
+    let mut processed = Vec::new();
+
+    for manifest in manifest_list {
+        let manifest_abs = if manifest.is_absolute() {
+            manifest.clone()
+        } else {
+            root.join(&manifest)
+        };
+
+        if !manifest_abs.exists() {
+            return Err(anyhow!("manifest not found: {}", manifest_abs.display()));
+        }
+
+        validate_plugin(&manifest_abs)?;
+        bump_version(&manifest_abs, BumpLevel::Patch)?;
+        let manifest_data = validate_plugin(&manifest_abs)?;
+
+        let plugin_dir = manifest_abs
+            .parent()
+            .and_then(|p| p.parent())
+            .ok_or_else(|| anyhow!("could not resolve plugin directory from manifest path"))?;
+
+        add_to_marketplace(root, &manifest_data, plugin_dir)?;
+
+        if !skip_stage {
+            git_add(&[manifest_abs.clone(), marketplace_path.clone()], root)?;
+        }
+
+        processed.push(manifest_abs);
+    }
+
+    Ok(processed)
+}
+
+/// Detects staged plugin manifests relative to the repository root.
+/// Algorithm: run `git diff --cached --name-only` filtering for `plugins/*/.claude-plugin/plugin.json`, dedupe, and return paths relative to root.
+fn detect_staged_manifests(root: &Path) -> Result<Vec<PathBuf>> {
+    let output = Command::new("git")
+        .args([
+            "diff",
+            "--cached",
+            "--name-only",
+            "--",
+            "plugins/*/.claude-plugin/plugin.json",
+        ])
+        .current_dir(root)
+        .output()
+        .with_context(|| "failed to run git diff for staged manifests")?;
+
+    if !output.status.success() {
+        return Err(anyhow!("git diff failed with status {}", output.status));
+    }
+
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    let mut set = HashSet::new();
+    let mut results = Vec::new();
+    for line in stdout.lines() {
+        let trimmed = line.trim();
+        if trimmed.is_empty() {
+            continue;
+        }
+        if set.insert(trimmed.to_string()) {
+            results.push(PathBuf::from(trimmed));
+        }
+    }
+    Ok(results)
+}
+
+/// Git-adds a list of paths relative to the repository root.
+/// Algorithm: convert each path to a repo-relative string, run `git add <paths>` in root, and fail if git reports error.
+fn git_add(paths: &[PathBuf], root: &Path) -> Result<()> {
+    let mut args: Vec<String> = Vec::new();
+    for path in paths {
+        let rel = diff_paths(path, root).unwrap_or_else(|| path.to_path_buf());
+        args.push(rel.to_string_lossy().to_string());
+    }
+
+    let status = Command::new("git")
+        .arg("add")
+        .args(&args)
+        .current_dir(root)
+        .status()
+        .with_context(|| "failed to run git add")?;
+
+    if !status.success() {
+        return Err(anyhow!("git add failed for {:?}", args));
+    }
+
+    Ok(())
 }

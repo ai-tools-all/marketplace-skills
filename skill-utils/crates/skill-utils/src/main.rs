@@ -3,7 +3,8 @@ use std::path::PathBuf;
 use anyhow::Result;
 use clap::{Parser, Subcommand};
 use skill_utils::{
-    add_to_marketplace, bump_version, init_plugin, validate_plugin, BumpLevel, InitOptions,
+    BumpLevel, InitOptions, add_to_marketplace, bump_version, init_plugin, precommit_flow,
+    validate_plugin,
 };
 
 /// CLI entrypoint for skill-utils workspace actions.
@@ -51,6 +52,15 @@ enum Commands {
         #[arg(long, value_enum, default_value = "patch")]
         level: BumpLevel,
     },
+    /// Run validate -> bump -> marketplace update for staged or provided manifests.
+    PreCommit {
+        #[arg(long)]
+        manifest: Vec<PathBuf>,
+        #[arg(long, default_value = ".")]
+        root: PathBuf,
+        #[arg(long)]
+        skip_stage: bool,
+    },
 }
 
 fn main() -> Result<()> {
@@ -90,6 +100,33 @@ fn main() -> Result<()> {
             // Auto-bump version with the requested level.
             let bumped = bump_version(&manifest, level)?;
             println!("Version bumped to {}", bumped);
+        }
+        Commands::PreCommit {
+            manifest,
+            root,
+            skip_stage,
+        } => {
+            let processed = precommit_flow(
+                &root,
+                if manifest.is_empty() {
+                    None
+                } else {
+                    Some(manifest)
+                },
+                skip_stage,
+            )?;
+            if processed.is_empty() {
+                println!("No staged plugin manifests detected.");
+            } else {
+                println!(
+                    "Processed manifests:\n{}",
+                    processed
+                        .iter()
+                        .map(|p| format!("- {}", p.display()))
+                        .collect::<Vec<_>>()
+                        .join("\n")
+                );
+            }
         }
     }
 

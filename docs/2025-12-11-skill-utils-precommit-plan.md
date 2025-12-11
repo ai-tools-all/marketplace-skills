@@ -4,6 +4,10 @@
   - Validate plugin manifests against required fields, semver, and referenced paths.
   - Append/update marketplace entries from existing manifests.
   - Auto bump plugin versions (patch/minor/major) with monotonic enforcement.
+- Pre-commit CLI flow:
+  - `cargo run -p skill-utils -- pre-commit` auto-detects staged `plugins/*/.claude-plugin/plugin.json`, runs validate → patch bump → marketplace update, and re-stages the manifest + marketplace (use `--skip-stage` to avoid git add).
+  - Pass specific manifests via `--manifest plugins/foo/.claude-plugin/plugin.json` (repeatable).
+  - Integrate hook: symlink `.git/hooks/pre-commit` to `skill-utils/scripts/pre-commit-skill-utils.sh`, or have the hook call `~/bin/skill-utils pre-commit`.
 - Defaults and assumptions:
   - Repository root passed via `--root` (defaults to current dir).
   - Marketplace path is `.claude-plugin/marketplace.json`; bootstrapped if missing/empty with name `marketplace-of-abeeshake`.
