@@ -1,0 +1,33 @@
+# ~/.gitconfig - Global git configuration with conditional includes per workspace
+
+[user]
+    name = Abhishek
+    email = abhishek@personal.com
+
+[init]
+    defaultBranch = main
+
+[pull]
+    rebase = true
+
+[push]
+    autoSetupRemote = true
+
+# --- Conditional includes based on directory ---
+
+[includeIf "gitdir:~/work/company-a/"]
+    path = ~/.gitconfig-company-a
+
+[includeIf "gitdir:~/work/company-b/"]
+    path = ~/.gitconfig-company-b
+
+[includeIf "gitdir:~/personal/"]
+    path = ~/.gitconfig-personal
+
+# --- URL rewrites to force correct SSH host per org ---
+
+[url "git@github-company-a:company-a/"]
+    insteadOf = git@github.com:company-a/
+
+[url "git@github-company-b:company-b/"]
+    insteadOf = git@github.com:company-b/

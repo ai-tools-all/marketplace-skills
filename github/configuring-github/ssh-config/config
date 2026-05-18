@@ -1,0 +1,22 @@
+# ~/.ssh/config - Multiple GitHub identities via host aliases
+
+# Personal GitHub
+Host github-personal github.com
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_personal
+    IdentitiesOnly yes
+
+# Company A GitHub
+Host github-company-a
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_company_a
+    IdentitiesOnly yes
+
+# Company B GitHub
+Host github-company-b
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_company_b
+    IdentitiesOnly yes

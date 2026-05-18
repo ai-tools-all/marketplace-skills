@@ -1,0 +1,14 @@
+# ~/.gitconfig-work — Activated for repos under ~/code/work/
+
+[user]
+    name = Abhishek Surname
+    email = abhishek@company.com
+
+[github]
+    user = abhishek-work
+
+[core]
+    sshCommand = ssh -i ~/.ssh/id_ed25519_work -F /dev/null
+
+[commit]
+    gpgSign = true

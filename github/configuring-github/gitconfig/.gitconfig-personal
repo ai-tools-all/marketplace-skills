@@ -1,0 +1,12 @@
+# ~/.gitconfig-personal - Overrides when working inside ~/personal/
+
+[user]
+    name = Abhishek
+    email = abhishek@personal.com
+    signingkey = ~/.ssh/id_ed25519_personal.pub
+
+[commit]
+    gpgsign = true
+
+[gpg]
+    format = ssh
