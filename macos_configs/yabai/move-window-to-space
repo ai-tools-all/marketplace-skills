@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+target_space="$1"
+
+case "$target_space" in
+    ''|*[!0-9]*)
+        exit 64
+        ;;
+esac
+
+# Keep creating spaces until the requested target exists, then move the
+# currently focused window there.
+while ! yabai -m query --spaces --space "$target_space" >/dev/null 2>&1; do
+    yabai -m space --create >/dev/null 2>&1 || exit 1
+done
+
+yabai -m window --space "$target_space"
