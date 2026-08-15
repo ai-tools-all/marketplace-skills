@@ -1,0 +1,21 @@
+{
+  "name": "thermo-nuclear-code-quality-review",
+  "description": "Brutal, high-conviction architectural audit focusing on maintainability, the 1k-line rule, spaghetti logic, and code-judo. Protects against slop.",
+  "version": "0.1.0",
+  "author": {
+    "name": "abeeshake",
+    "email": null,
+    "url": null
+  },
+  "homepage": null,
+  "keywords": [
+    "code-review",
+    "architecture",
+    "maintainability",
+    "quality"
+  ],
+  "commands": null,
+  "agents": null,
+  "skills": "./skills/",
+  "hooks": null
+}

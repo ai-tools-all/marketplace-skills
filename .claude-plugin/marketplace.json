@@ -6,7 +6,7 @@
   "plugins": [
     {
       "name": "bug-detective",
-      "source": "/home/abhishek/Downloads/experiments/ai-tools/marketplace_of_abeeshake/plugins/bug-detective",
+      "source": "./plugins/bug-detective",
       "description": "Systematically debug issues with step-by-step troubleshooting approaches."
     },
     {
@@ -18,6 +18,26 @@
       "name": "advise",
       "source": "plugins/advise",
       "description": "Consult the team registry to surface warnings, proven configurations, and shortcuts relevant to the current task."
+    },
+    {
+      "name": "thermo-nuclear-code-quality-review",
+      "source": "plugins/thermo-nuclear-code-quality-review",
+      "description": "Brutal, high-conviction architectural audit focusing on maintainability, the 1k-line rule, spaghetti logic, and code-judo. Protects against slop."
+    },
+    {
+      "name": "doc",
+      "source": "./plugins/doc",
+      "description": "Create and manage structured documentation — experiments, plans, findings, checkpoints, research, per-spec task trackers, and learnings. Config-driven, parallel-safe."
+    },
+    {
+      "name": "add-a-loop",
+      "source": "./plugins/add-a-loop",
+      "description": "Add a recurring reminder or background job (\"loop\") to the qdb loops subsystem from the CLI — the serve → add → list flow, schedule forms, kinds, and gateway delivery."
+    },
+    {
+      "name": "bro",
+      "source": "./plugins/bro",
+      "description": "Re-explain the previous assistant message in plain language — use /bro when the last reply was too dense or jargon-heavy."
     }
   ]
 }
