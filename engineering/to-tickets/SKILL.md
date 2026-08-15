@@ -59,7 +59,7 @@ Iterate until the user approves the breakdown.
 
 Publish the approved tickets. **How** depends on the tracker `/setup-matt-pocock-skills` configured — the tickets are the same either way, only the shape of the blocking edges changes:
 
-- **Local files** → store the tickets in the `/doc` skill's experiment structure (not `.scratch/`). Resume the feature's experiment — the one `/to-spec` created for this feature; `/doc start "<feature>"` if none exists yet. Then, for each ticket in dependency order (blockers first), run `/doc ticket <idx> <NN> "<title>"` where `NN` is the ticket's dependency-order number, and write the ticket body into the seeded headings of the created file. Each ticket's "Blocked by" lists the `NN` numbers it depends on; the `status: ready-for-agent` frontmatter is the local equivalent of the triage label. One ticket per file — the script enforces one file per `NN`.
+- **Local files** → store the tickets as ONE checklist in the `/doc` skill's experiment structure (not `.scratch/`). Resume the feature's experiment — the one `/to-spec` created for this feature; `/doc start "<feature>"` if none exists yet. Run `/doc tasks <idx> <NN>` — where `NN` is the plan/spec number these tickets implement — to create that spec's mutable tracker, then write the slices into it as an ordered checklist — blockers first, each item a tracer-bullet slice, with "(blocked by N)" noted inline where an item depends on an earlier one. Deferred slices go in the tracker's Deferred bucket. Tick boxes in place as `/implement` lands each slice. **One tracker per spec, not one file per ticket** — the doc skill carries the same guidance at `references/tickets.md`.
 - **A real issue tracker (GitHub, Linear, …)** → publish one issue per ticket in dependency order (blockers first) so each ticket's blocking edges can reference real identifiers. Use the platform's native blocking / sub-issue relationship where it has one; otherwise set each ticket's "Blocked by" to the blocking issues. Apply the `ready-for-agent` triage label unless instructed otherwise — the tickets are agent-grabbable by construction.
 
 Work the **frontier**: any ticket whose blockers are all done. For a purely linear chain that means top to bottom.
@@ -68,7 +68,7 @@ Do NOT close or modify any parent issue.
 
 <local-ticket-template>
 
-`/doc ticket` writes the frontmatter (`title`, `status: ready-for-agent`, …) and seeds these headings. Fill the body:
+Each checklist item in the spec's `tasks/NN-…` tracker is one line (`- [ ] N. <title> (blocked by …)`). When a slice needs more than a line, expand that item with the shape below — keep it compact, it's a list entry, not a file:
 
 ## What to build
 

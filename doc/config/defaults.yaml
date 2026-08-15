@@ -15,14 +15,14 @@ structure:
   runs: {}
 
 # Experiment subdirs created by /doc expt (or /doc start <name>)
+# tasks/ holds one tracker per spec (keyed by the plan's NN), not per experiment.
 experiment_dirs:
   - plans
   - findings
   - checkpoints
   - research
   - review
-  - spec
-  - tickets
+  - tasks
 
 # Valid learnings domains — learn.sh validates against this list
 # Add domains as needed for your repo
@@ -52,8 +52,7 @@ naming:
   research_prompt: "{NN}-{datetime}-prompt-{topic}.md"
   research_response: "{NN}-{datetime}-res-{topic}.md"
   review: "{NN}-{datetime}-review-{title}.md"
-  spec: "{NN}-{datetime}-spec-{title}.md"
-  ticket: "{NN}-{datetime}-{title}.md"
+  tasks: "{NN}-{datetime}-tasks-{title}.md"
   learning: "{NNN}-{datetime}-{title}.md"
   timestamp: "%Y-%m-%d %H:%M UTC"
   datetime: "%Y-%m-%d-%H-%M-%S"
@@ -69,8 +68,7 @@ frontmatter:
     checkpoint: active
     research: draft
     review: open
-    spec: draft
-    ticket: ready-for-agent
+    tasks: active
     learning: reference
 
 # Canonical status values. Use these — nothing else.

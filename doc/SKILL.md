@@ -1,7 +1,7 @@
 ---
 name: doc
 description: Create and manage structured documentation — experiments, plans, findings, checkpoints, research, learnings. Config-driven, parallel-safe.
-argument-hint: "[start|expt|plan|finding|ckpt|research|review|learn|list|status|resume] [args]"
+argument-hint: "[start|expt|plan|finding|ckpt|research|review|tasks|learn|list|status|resume] [args]"
 allowed-tools: Bash(bash ${AGENTS_SKILLS_DIR}/scripts/*), Read, Write, Glob, Grep
 license: Apache-2.0
 metadata:
@@ -24,8 +24,7 @@ Config-driven documentation scaffolding. Config lives inside the skill at `confi
 | ckpt \<index\> \<description\> | `bash ${AGENTS_SKILLS_DIR}/scripts/ckpt.sh <index> "<description>"` |
 | research \<index\> \<topic\> | `bash ${AGENTS_SKILLS_DIR}/scripts/research.sh <index> "<topic>"` |
 | review \<index\> \<title\> | `bash ${AGENTS_SKILLS_DIR}/scripts/review.sh <index> "<title>"` |
-| spec \<index\> \<title\> | `bash ${AGENTS_SKILLS_DIR}/scripts/spec.sh <index> "<title>"` |
-| ticket \<index\> \<NN\> \<title\> | `bash ${AGENTS_SKILLS_DIR}/scripts/ticket.sh <index> <NN> "<title>"` |
+| tasks \<index\> \<NN\> | `bash ${AGENTS_SKILLS_DIR}/scripts/tasks.sh <index> <NN>` |
 | learn \<index\> \<domain\> \<title\> | `bash ${AGENTS_SKILLS_DIR}/scripts/learn.sh <index> "<domain>" "<title>"` |
 | list | `bash ${AGENTS_SKILLS_DIR}/scripts/list.sh` |
 | status \<index\> | `bash ${AGENTS_SKILLS_DIR}/scripts/status.sh <index>` |
@@ -49,8 +48,8 @@ Config-driven documentation scaffolding. Config lives inside the skill at `confi
 | Conversation wrapping up / context switch | `/doc ckpt <idx> "<short-label>"` — short label only (2-5 words), then **write body content into the file** with What/Why/How + mermaid diagram. **Do this automatically without being asked.** |
 | "Research X" / "Look into Y" | `/doc research <idx> "<topic>"` — write prompt, do research, write results |
 | "Review X" / "Check this output" | `/doc review <idx> "<title>"` then write review content with verdict |
-| "Write the spec" (via `/to-spec` on a **local** tracker) | `/doc spec <idx> "<title>"` then write the spec into the seeded section headings |
-| "Break this into tickets" (via `/to-tickets` on a **local** tracker) | one `/doc ticket <idx> <NN> "<title>"` per slice, in dependency order (blockers first), then write each ticket body |
+| "Write the spec" / turn the thread into a spec | `/doc plan <idx> "<title>"`, then fill that plan using the template in `references/spec.md`. **A spec IS a plan** — no separate doc type. |
+| "Break this into tickets" / "task list" | `/doc tasks <idx> <NN>` — `NN` = the plan/spec number this implements. Creates ONE mutable tracker **per spec** (`tasks/NN-…`). Fill it using `references/tickets.md` (tracer-bullet slices, blockers-first + a Deferred bucket) and tick boxes in place as you implement. |
 | "Remember this" / "Key learning" | `/doc learn <idx> <domain> "<title>"` — write distilled insight |
 | "Continue experiment 19" / "Pick up" | `/doc resume <idx>` — reads meta + latest plan + latest checkpoint. Set as active for this conversation. |
 | "What experiments exist?" | `/doc list` |
@@ -115,9 +114,13 @@ experiments/NNN-{name}/
 ├── checkpoints/        progress snapshots, numbered
 ├── review/             structured reviews, numbered
 ├── research/           prompt + response pairs, numbered
-├── spec/               specs, numbered (see /to-spec on a local tracker)
-└── tickets/            tracer-bullet tickets, numbered in dependency order (see /to-tickets on a local tracker)
+└── tasks/              one mutable tracker PER SPEC — keyed to plans/NN (see references/tickets.md)
 ```
+
+Specs are written into a normal `plans/` file using `references/spec.md` — there
+is no `spec/` dir. Each spec's task tracker lives in `tasks/`, keyed by the
+plan's `NN` (`tasks/02-…` implements `plans/02-…`) — one tracker per spec, not
+one per experiment and not one file per ticket.
 
 ## File Naming
 
@@ -136,13 +139,18 @@ Frontmatter is emitted automatically with 6 keys — `title`, `type`, `topic`,
 (`verdict` on reviews, `role` on research). That stays inside the repo's 4-7 key
 rule. Use only the `statuses:` values in `config/defaults.yaml`.
 
-`spec` and `ticket` docs seed their body with section headings in addition to
-frontmatter — the spec template and the tracer-bullet ticket template
-respectively — so the structure is systematic before you write a word. A
-ticket's `status: ready-for-agent` is the local-tracker equivalent of the
-`ready-for-agent` triage label; it is the one frontmatter field that may be
-updated in place as the ticket moves through triage, since a ticket is a living
-work item rather than an immutable record.
+The `tasks/` files are the **one mutable doc type** — each is a checklist you
+tick in place as you implement, not an immutable numbered record. There is one
+tracker **per spec**, keyed by the plan's `NN` (`spec: NN` in its frontmatter),
+and it exists to answer three questions about that spec: **is it finished?**
+(boxes ticked), **what was deferred?** (the Deferred bucket), **what can run in
+parallel?** (any slice whose blockers are all ticked — the frontier). Everything
+else (plans, findings, checkpoints, research, review) stays append-only: never
+edit an old one, create a new numbered file. A **spec** is written into a normal
+`plan` file using the template in `references/spec.md`; there is no separate spec
+doc type. The folded-in guides `references/spec.md` (spec synthesis + template)
+and `references/tickets.md` (tracer-bullet slicing + checklist) carry what the
+standalone `/to-spec` and `/to-tickets` skills used to.
 
 ## Setup
 
@@ -158,7 +166,7 @@ inside the skill. It's read by `scripts/_yaml.py` (stdlib only — no PyYAML).
 2. **Index is just the number.** `23` not `023` not `023-docs-and-structs`.
 3. **No auto-commit.** Scripts scaffold files — you or the user decide when to commit.
 4. **Plans go in experiments.** Never in `.claude/plan.md`. This is non-negotiable.
-5. **Files are immutable.** Don't edit old plans/findings — create a new numbered one.
+5. **Files are immutable — except `tasks/` trackers.** Don't edit old plans/findings — create a new numbered one. The per-spec `tasks/NN-…` checklists are the one exception: tick their boxes in place as you implement.
 6. **Valid learnings domains** are listed in `config/defaults.yaml`. `learn` will error on invalid domains.
 7. **Keep titles short.** Titles become filenames. Use 2-5 words max — concise and descriptive. `"auth-flow"` not `"investigation-into-authentication-flow-reliability-issues"`. The numbering prefix handles ordering; the title just needs to identify the topic at a glance.
 

@@ -19,7 +19,7 @@ Check with the user that these seams match their expectations.
 3. Write the spec using the template below, then publish it. **How** depends on the tracker `/setup-matt-pocock-skills` configured — the spec content is the same either way, only where it lands changes:
 
    - **A real issue tracker (GitHub, Linear, …)** → create an issue with the spec body and apply the `ready-for-agent` triage label — no need for additional triage.
-   - **Local Markdown** → store the spec in the `/doc` skill's experiment structure (not `.scratch/`). Create the feature's experiment with `/doc start "<feature>"` (or resume the active one if this conversation already has it), then run `/doc spec <idx> "<title>"` and write the spec into the seeded section headings of the created file. The doc file's `status: draft` is the local equivalent of the `ready-for-agent` label; `/to-tickets` will resume this same experiment to break the spec into tickets.
+   - **Local Markdown** → store the spec in the `/doc` skill's experiment structure (not `.scratch/`). Create the feature's experiment with `/doc start "<feature>"` (or resume the active one if this conversation already has it), then run `/doc plan <idx> "<title>"` and write the spec into that plan file using the template below — the doc skill carries the same template at `references/spec.md`. **A spec is just a plan**; there is no separate spec doc type. The plan's `status: draft` is the local equivalent of the `ready-for-agent` label; `/to-tickets` will resume this same experiment to break the spec into a task list.
 
 <spec-template>
 
