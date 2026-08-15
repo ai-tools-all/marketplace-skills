@@ -11,17 +11,17 @@
     },
     {
       "name": "retrospective",
-      "source": "plugins/retrospective",
+      "source": "./plugins/retrospective",
       "description": "Adds a /retrospective command that captures session learnings and prepares a Skill PR to the team registry."
     },
     {
       "name": "advise",
-      "source": "plugins/advise",
+      "source": "./plugins/advise",
       "description": "Consult the team registry to surface warnings, proven configurations, and shortcuts relevant to the current task."
     },
     {
       "name": "thermo-nuclear-code-quality-review",
-      "source": "plugins/thermo-nuclear-code-quality-review",
+      "source": "./plugins/thermo-nuclear-code-quality-review",
       "description": "Brutal, high-conviction architectural audit focusing on maintainability, the 1k-line rule, spaghetti logic, and code-judo. Protects against slop."
     },
     {
