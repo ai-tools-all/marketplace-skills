@@ -3,14 +3,7 @@
   "description": "Consult the team registry to surface warnings, proven configurations, and shortcuts relevant to the current task.",
   "version": "0.1.1",
   "author": {
-    "name": "Anonymous",
-    "email": null,
-    "url": null
+    "name": "Anonymous"
   },
-  "homepage": null,
-  "keywords": null,
-  "commands": "./commands/",
-  "agents": null,
-  "skills": null,
-  "hooks": null
+  "commands": "./commands/"
 }

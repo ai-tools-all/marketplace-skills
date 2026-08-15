@@ -3,14 +3,7 @@
   "description": "Add a recurring reminder or background job (\"loop\") to the qdb loops subsystem from the CLI — the serve → add → list flow, schedule forms, kinds, and gateway delivery.",
   "version": "1.0.0",
   "author": {
-    "name": "Abhishek Tripathi",
-    "email": null,
-    "url": null
+    "name": "Abhishek Tripathi"
   },
-  "homepage": null,
-  "keywords": null,
-  "commands": null,
-  "agents": null,
-  "skills": "./skills/",
-  "hooks": null
+  "skills": "./skills/"
 }

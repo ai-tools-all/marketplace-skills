@@ -3,14 +3,7 @@
   "description": "Create and manage structured documentation — experiments, plans, findings, checkpoints, research, per-spec task trackers, and learnings. Config-driven, parallel-safe.",
   "version": "1.0.0",
   "author": {
-    "name": "Abhishek Tripathi",
-    "email": null,
-    "url": null
+    "name": "Abhishek Tripathi"
   },
-  "homepage": null,
-  "keywords": null,
-  "commands": null,
-  "agents": null,
-  "skills": "./skills/",
-  "hooks": null
+  "skills": "./skills/"
 }

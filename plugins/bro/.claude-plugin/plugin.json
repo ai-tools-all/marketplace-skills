@@ -3,14 +3,7 @@
   "description": "Re-explain the previous assistant message in plain language — use /bro when the last reply was too dense or jargon-heavy.",
   "version": "1.0.0",
   "author": {
-    "name": "Abhishek Tripathi",
-    "email": null,
-    "url": null
+    "name": "Abhishek Tripathi"
   },
-  "homepage": null,
-  "keywords": null,
-  "commands": null,
-  "agents": null,
-  "skills": "./skills/",
-  "hooks": null
+  "skills": "./skills/"
 }
