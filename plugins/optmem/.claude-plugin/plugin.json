@@ -1,0 +1,9 @@
+{
+  "name": "optmem",
+  "description": "Permanent, append-only memory for AI agents — a project-local memory that survives sessions, compaction, and model/vendor changes. Run `wake` at startup, `note` to record, `recall`/`zoom` to retrieve. One Python file, no dependencies.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Abhishek Tripathi"
+  },
+  "skills": "./skills/"
+}

@@ -38,6 +38,11 @@
       "name": "bro",
       "source": "./plugins/bro",
       "description": "Re-explain the previous assistant message in plain language — use /bro when the last reply was too dense or jargon-heavy."
+    },
+    {
+      "name": "optmem",
+      "source": "./plugins/optmem",
+      "description": "Permanent, append-only memory for AI agents — project-local memory that survives sessions, compaction, and model/vendor changes. One Python file, no dependencies."
     }
   ]
 }
