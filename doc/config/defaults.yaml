@@ -1,0 +1,82 @@
+# Default config for /doc skill
+# Edit this file to customize for your setup
+
+docs_root: docs
+
+# Folder skeleton created by /doc init
+structure:
+  architecture: {}
+  guides: {}
+  learnings: {}
+  research: {}
+  experiments: {}
+  # repo-specific
+  playbooks: {}
+  runs: {}
+
+# Experiment subdirs created by /doc expt (or /doc start <name>)
+experiment_dirs:
+  - plans
+  - findings
+  - checkpoints
+  - research
+  - review
+  - spec
+  - tickets
+
+# Valid learnings domains — learn.sh validates against this list
+# Add domains as needed for your repo
+learnings_domains:
+  - backend
+  - frontend
+  - data
+  - pipeline
+  - bugs
+  - issues
+  - skills
+  - tooling
+
+# File naming templates
+#
+# Tokens: {NNN} 3-digit seq, {NN} 2-digit seq, {datetime} YYYY-MM-DD-HH-MM-SS (UTC),
+#         {date} YYYY-MM-DD (UTC), {title}/{description}/{topic}/{name} slugified.
+#
+# IMPORTANT: the sequence token must stay FIRST. next_number() reads the leading
+# ^[0-9]+ off existing filenames — a leading {datetime} makes it parse the year
+# (2026) as the sequence number and the next file becomes 2027-*.
+naming:
+  experiment: "{NNN}-{name}"
+  plan: "{NN}-{datetime}-{title}.md"
+  finding: "{NN}-{datetime}-{title}.md"
+  checkpoint: "{NN}-{datetime}-{description}.md"
+  research_prompt: "{NN}-{datetime}-prompt-{topic}.md"
+  research_response: "{NN}-{datetime}-res-{topic}.md"
+  review: "{NN}-{datetime}-review-{title}.md"
+  spec: "{NN}-{datetime}-spec-{title}.md"
+  ticket: "{NN}-{datetime}-{title}.md"
+  learning: "{NNN}-{datetime}-{title}.md"
+  timestamp: "%Y-%m-%d %H:%M UTC"
+  datetime: "%Y-%m-%d-%H-%M-%S"
+
+# YAML frontmatter emitted into every created file.
+# Base keys are always: title, type, topic, status, created, related (6).
+# Scripts may add at most one extra key, keeping the total within CLAUDE.md's 4-7.
+frontmatter:
+  # default `status:` value per doc type
+  status:
+    plan: draft
+    finding: active
+    checkpoint: active
+    research: draft
+    review: open
+    spec: draft
+    ticket: ready-for-agent
+    learning: reference
+
+# Canonical status values. Use these — nothing else.
+statuses:
+  - planning
+  - active
+  - complete
+  - abandoned
+  - graduated
